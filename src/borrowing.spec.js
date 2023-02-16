@@ -1,4 +1,4 @@
-import React, {useRef, useLayoutEffect} from 'react'
+import {useRef, useLayoutEffect} from 'react'
 import {createPortal} from 'react-dom'
 import {createContainer, ButtonDriver} from '@jneander/spec-utils-dom'
 import {render} from '@jneander/spec-utils-react'
