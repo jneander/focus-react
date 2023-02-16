@@ -92,15 +92,15 @@ describe('Borrowing focus', () => {
     context('when the previously-focused element has been removed', () => {
       it('falls back to the parent focus fallback when assigned', async () => {
         await renderContent(
-          <SpecComponent showBorrower={false} showParentButton2={true} useParentFallback={true} />
+          <SpecComponent showBorrower={false} showParentButton2={true} useParentFallback={true} />,
         )
         get('Parent Button 2').focus()
         await renderContent(
-          <SpecComponent showBorrower={true} showParentButton2={true} useParentFallback={true} />
+          <SpecComponent showBorrower={true} showParentButton2={true} useParentFallback={true} />,
         )
 
         await renderContent(
-          <SpecComponent showBorrower={false} showParentButton2={false} useParentFallback={true} />
+          <SpecComponent showBorrower={false} showParentButton2={false} useParentFallback={true} />,
         )
 
         expect(get('Parent Button 1').focused).to.be.true
@@ -108,15 +108,19 @@ describe('Borrowing focus', () => {
 
       it('loses focus to the document body when no parent focus fallback was assigned', async () => {
         await renderContent(
-          <SpecComponent showBorrower={false} showParentButton2={true} useParentFallback={false} />
+          <SpecComponent showBorrower={false} showParentButton2={true} useParentFallback={false} />,
         )
         get('Parent Button 2').focus()
         await renderContent(
-          <SpecComponent showBorrower={true} showParentButton2={true} useParentFallback={false} />
+          <SpecComponent showBorrower={true} showParentButton2={true} useParentFallback={false} />,
         )
 
         await renderContent(
-          <SpecComponent showBorrower={false} showParentButton2={false} useParentFallback={false} />
+          <SpecComponent
+            showBorrower={false}
+            showParentButton2={false}
+            useParentFallback={false}
+          />,
         )
 
         expect(document.activeElement === document.body).to.be.true

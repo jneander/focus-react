@@ -111,7 +111,7 @@ describe('Focus fallback', () => {
         await renderContent(
           <RegionWithFallback name="Parent">
             <ChildRegion showButton2={true} />
-          </RegionWithFallback>
+          </RegionWithFallback>,
         )
 
         const button2 = ButtonDriver.findWithText('Child Button 2', $container)
@@ -120,7 +120,7 @@ describe('Focus fallback', () => {
         await renderContent(
           <RegionWithFallback name="Parent">
             <ChildRegion showButton2={false} />
-          </RegionWithFallback>
+          </RegionWithFallback>,
         )
         await waitForReconciliation()
 
@@ -155,7 +155,7 @@ describe('Focus fallback', () => {
         await renderContent(
           <ParentRegion>
             <ChildRegion showButton2={true} />
-          </ParentRegion>
+          </ParentRegion>,
         )
 
         const button2 = ButtonDriver.findWithText('Child Button 2', $container)
@@ -164,7 +164,7 @@ describe('Focus fallback', () => {
         await renderContent(
           <ParentRegion>
             <ChildRegion showButton2={false} />
-          </ParentRegion>
+          </ParentRegion>,
         )
         await waitForReconciliation()
 
@@ -202,7 +202,7 @@ describe('Focus fallback', () => {
           await renderContent(
             <ParentRegion showButton2={true}>
               <ChildRegion />
-            </ParentRegion>
+            </ParentRegion>,
           )
 
           const button2 = ButtonDriver.findWithText('Parent Button 2', $container)
@@ -211,7 +211,7 @@ describe('Focus fallback', () => {
           await renderContent(
             <ParentRegion showButton2={false}>
               <ChildRegion />
-            </ParentRegion>
+            </ParentRegion>,
           )
           await waitForReconciliation()
 
@@ -248,7 +248,7 @@ describe('Focus fallback', () => {
           await renderContent(
             <ParentRegion showButton2={true}>
               <ChildRegion />
-            </ParentRegion>
+            </ParentRegion>,
           )
 
           const button2 = ButtonDriver.findWithText('Parent Button 2', $container)
@@ -257,7 +257,7 @@ describe('Focus fallback', () => {
           await renderContent(
             <ParentRegion showButton2={false}>
               <ChildRegion />
-            </ParentRegion>
+            </ParentRegion>,
           )
           await waitForReconciliation()
 
