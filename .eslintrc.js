@@ -22,13 +22,7 @@ module.exports = {
         node: true,
       },
 
-      files: [
-        './config/**/*.js',
-        './scripts/**/*.js',
-        './babel.build.js',
-        './babel.config.js',
-        './.eslintrc.js',
-      ],
+      files: ['./config/**/*.js', './scripts/**/*.js', './babel.config.js', './.eslintrc.js'],
     },
 
     {
@@ -70,6 +64,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react/jsx-filename-extension': ['error', {extensions: ['.js']}],
     'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 
   settings: {

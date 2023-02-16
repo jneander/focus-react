@@ -1,4 +1,3 @@
-import React from 'react'
 import {createContainer, ButtonDriver} from '@jneander/spec-utils-dom'
 import {render} from '@jneander/spec-utils-react'
 import {combineRefs} from '@jneander/utils-react'

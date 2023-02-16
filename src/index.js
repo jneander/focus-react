@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react'
+import {createContext, useContext, useEffect, useLayoutEffect, useMemo, useState} from 'react'
 import {Focus} from '@jneander/focus-dom'
 
 import FocusRegion from './FocusRegion'

@@ -4,7 +4,7 @@ module.exports = {
       '@babel/preset-env',
 
       {
-        modules: process.env.CJS ? 'commonjs' : false,
+        modules: false,
 
         targets: {
           browsers: [
@@ -22,6 +22,6 @@ module.exports = {
       },
     ],
 
-    '@babel/preset-react',
+    ['@babel/preset-react', {runtime: 'automatic'}],
   ],
 }
