@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
-  useState
+  useState,
 } from 'react'
 import {Focus} from '@jneander/focus-dom'
 
