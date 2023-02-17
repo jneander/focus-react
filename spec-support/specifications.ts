@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 const originalMocha = {
   describe: window.describe,
   describeOnly: window.describe.only,

@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import {createContainer, ButtonDriver} from '@jneander/spec-utils-dom'
 import {render} from '@jneander/spec-utils-react'
 import {combineRefs} from '@jneander/utils-react'
