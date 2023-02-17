@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import {useRef, useLayoutEffect} from 'react'
 import {createPortal} from 'react-dom'
 import {createContainer, ButtonDriver} from '@jneander/spec-utils-dom'

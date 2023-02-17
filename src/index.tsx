@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import {createContext, useContext, useEffect, useLayoutEffect, useMemo, useState} from 'react'
 import {Focus} from '@jneander/focus-dom'
 
