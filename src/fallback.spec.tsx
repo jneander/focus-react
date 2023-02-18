@@ -200,20 +200,12 @@ describe('Focus fallback', () => {
             )
           }
 
-          await renderContent(
-            <ParentRegion showButton2={true}>
-              <ChildRegion />
-            </ParentRegion>,
-          )
+          await renderContent(<ParentRegion showButton2={true} />)
 
           const button2 = ButtonDriver.findWithText('Parent Button 2', $container)
           button2.focus()
 
-          await renderContent(
-            <ParentRegion showButton2={false}>
-              <ChildRegion />
-            </ParentRegion>,
-          )
+          await renderContent(<ParentRegion showButton2={false} />)
           await waitForReconciliation()
 
           const button1 = ButtonDriver.findWithText('Child Button 1', $container)
@@ -246,20 +238,12 @@ describe('Focus fallback', () => {
             )
           }
 
-          await renderContent(
-            <ParentRegion showButton2={true}>
-              <ChildRegion />
-            </ParentRegion>,
-          )
+          await renderContent(<ParentRegion showButton2={true} />)
 
           const button2 = ButtonDriver.findWithText('Parent Button 2', $container)
           button2.focus()
 
-          await renderContent(
-            <ParentRegion showButton2={false}>
-              <ChildRegion />
-            </ParentRegion>,
-          )
+          await renderContent(<ParentRegion showButton2={false} />)
           await waitForReconciliation()
 
           expect(document.body === document.activeElement).to.be.true
