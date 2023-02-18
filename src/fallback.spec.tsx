@@ -1,14 +1,13 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import {createContainer, ButtonDriver} from '@jneander/spec-utils-dom'
+import {ButtonDriver, createContainer} from '@jneander/spec-utils-dom'
 import {render} from '@jneander/spec-utils-react'
 import {combineRefs} from '@jneander/utils-react'
+import {ReactNode, RefCallback} from 'react'
 
 import {FocusProvider, useFocusRegion} from '.'
 
 describe('Focus fallback', () => {
-  let $container
-  let component
+  let $container: HTMLElement
+  let component: Awaited<ReturnType<typeof render>>
 
   beforeEach(() => {
     $container = createContainer()
@@ -20,7 +19,7 @@ describe('Focus fallback', () => {
     $container.remove()
   })
 
-  async function renderContent(content) {
+  async function renderContent(content: ReactNode) {
     const element = <FocusProvider>{content}</FocusProvider>
 
     component = await render(element, {$container})
@@ -30,14 +29,14 @@ describe('Focus fallback', () => {
     await new Promise(requestAnimationFrame)
   }
 
-  function get(buttonText) {
+  function get(buttonText: string) {
     return ButtonDriver.findWithText(buttonText, $container)
   }
 
   context('within one level of regions', () => {
     context('when the default focus ref has been applied', () => {
       it('moves focus to the default focus element', async () => {
-        function Region({showButton2}) {
+        function Region({showButton2}: {showButton2: boolean}) {
           const focusRegion = useFocusRegion()
 
           return (
@@ -60,7 +59,7 @@ describe('Focus fallback', () => {
 
     context('when the default focus ref has not been applied', () => {
       it('loses focus to the document body', async () => {
-        function Region({showButton2}) {
+        function Region({showButton2}: {showButton2: boolean}) {
           const focusRegion = useFocusRegion()
 
           return (
@@ -83,7 +82,13 @@ describe('Focus fallback', () => {
   })
 
   context('within two levels of regions', () => {
-    function RegionWithFallback({children, fallbackRef, name}) {
+    interface Props {
+      children: ReactNode
+      fallbackRef?: RefCallback<HTMLElement>
+      name: string
+    }
+
+    function RegionWithFallback({children, fallbackRef, name}: Props) {
       const focusRegion = useFocusRegion()
       const containerRef = combineRefs(fallbackRef, focusRegion.containerRef)
 
@@ -98,7 +103,7 @@ describe('Focus fallback', () => {
 
     context('when a focused element in the child region is removed', () => {
       it('moves focus to the fallback focus element of the child region when assigned', async () => {
-        function ChildRegion({showButton2}) {
+        function ChildRegion({showButton2}: {showButton2: boolean}) {
           const focusRegion = useFocusRegion()
 
           return (
@@ -130,7 +135,7 @@ describe('Focus fallback', () => {
       })
 
       it('uses the parent fallback when the child does not have one', async () => {
-        function ParentRegion({children}) {
+        function ParentRegion({children}: {children: ReactNode}) {
           const focusRegion = useFocusRegion()
 
           return (
@@ -142,7 +147,7 @@ describe('Focus fallback', () => {
           )
         }
 
-        function ChildRegion({showButton2}) {
+        function ChildRegion({showButton2}: {showButton2: boolean}) {
           const focusRegion = useFocusRegion()
 
           return (
@@ -175,7 +180,7 @@ describe('Focus fallback', () => {
 
       context('when the child region is the fallback of the parent region', () => {
         it('moves focus to the fallback focus element of the child region when assigned', async () => {
-          function ChildRegion({parentRef}) {
+          function ChildRegion({parentRef}: {parentRef: RefCallback<HTMLElement>}) {
             const focusRegion = useFocusRegion()
             const containerRef = combineRefs(focusRegion.containerRef, parentRef)
 
@@ -187,7 +192,7 @@ describe('Focus fallback', () => {
             )
           }
 
-          function ParentRegion({showButton2}) {
+          function ParentRegion({showButton2}: {showButton2: boolean}) {
             const focusRegion = useFocusRegion()
 
             return (
@@ -213,7 +218,7 @@ describe('Focus fallback', () => {
         })
 
         it('loses focus to the document body when the child has no fallback', async () => {
-          function ChildRegion({parentRef}) {
+          function ChildRegion({parentRef}: {parentRef: RefCallback<HTMLElement>}) {
             const focusRegion = useFocusRegion()
             const containerRef = combineRefs(focusRegion.containerRef, parentRef)
 
@@ -225,7 +230,7 @@ describe('Focus fallback', () => {
             )
           }
 
-          function ParentRegion({showButton2}) {
+          function ParentRegion({showButton2}: {showButton2: boolean}) {
             const focusRegion = useFocusRegion()
 
             return (
@@ -254,7 +259,7 @@ describe('Focus fallback', () => {
 
   context('when using multiple fallbacks', () => {
     it('moves focus to the lowest-order fallback', async () => {
-      function Region({showOther}) {
+      function Region({showOther}: {showOther: boolean}) {
         const focusRegion = useFocusRegion()
 
         return (
@@ -276,7 +281,7 @@ describe('Focus fallback', () => {
     })
 
     it('uses the next-lowest fallback when the lowest has been removed', async () => {
-      function Region({showFallback1, showOther}) {
+      function Region({showFallback1, showOther}: {showFallback1: boolean; showOther: boolean}) {
         const focusRegion = useFocusRegion()
 
         return (
@@ -298,7 +303,7 @@ describe('Focus fallback', () => {
     })
 
     it('loses focus to the document body when all fallback elements have been removed', async () => {
-      function Region({showButtons}) {
+      function Region({showButtons}: {showButtons: boolean}) {
         const focusRegion = useFocusRegion()
 
         return (

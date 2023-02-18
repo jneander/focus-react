@@ -1,6 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import {useRef, useLayoutEffect} from 'react'
+import {ReactNode, useLayoutEffect, useRef} from 'react'
 import {createPortal} from 'react-dom'
 import {createContainer, ButtonDriver} from '@jneander/spec-utils-dom'
 import {render} from '@jneander/spec-utils-react'
@@ -8,8 +6,8 @@ import {render} from '@jneander/spec-utils-react'
 import {FocusProvider, useFocusRegion} from '.'
 
 describe('Borrowing focus', () => {
-  let $container
-  let component
+  let $container: HTMLElement
+  let component: Awaited<ReturnType<typeof render>>
 
   beforeEach(() => {
     $container = createContainer()
@@ -21,13 +19,13 @@ describe('Borrowing focus', () => {
     $container.remove()
   })
 
-  async function renderContent(content) {
+  async function renderContent(content: ReactNode) {
     const element = <FocusProvider>{content}</FocusProvider>
 
     component = await render(element, {$container})
   }
 
-  function get(buttonText) {
+  function get(buttonText: string) {
     return ButtonDriver.findWithText(buttonText, document.body)
   }
 
@@ -46,7 +44,17 @@ describe('Borrowing focus', () => {
       )
     }
 
-    function SpecComponent({showBorrower, showParentButton2 = true, useParentFallback = true}) {
+    interface SpecComponentProps {
+      showBorrower: boolean
+      showParentButton2?: boolean
+      useParentFallback?: boolean
+    }
+
+    function SpecComponent({
+      showBorrower,
+      showParentButton2 = true,
+      useParentFallback = true,
+    }: SpecComponentProps) {
       const focusRegion = useFocusRegion()
 
       const fallbackRef = useParentFallback ? focusRegion.fallbackRef : null
@@ -159,7 +167,17 @@ describe('Borrowing focus', () => {
       return createPortal(element, containerRef.current)
     }
 
-    function SpecComponent({showBorrower, showParentButton2 = true, useParentFallback = true}) {
+    interface SpecComponentProps {
+      showBorrower: boolean
+      showParentButton2?: boolean
+      useParentFallback?: boolean
+    }
+
+    function SpecComponent({
+      showBorrower,
+      showParentButton2 = true,
+      useParentFallback = true,
+    }: SpecComponentProps) {
       const focusRegion = useFocusRegion()
 
       const fallbackRef = useParentFallback ? focusRegion.fallbackRef : null

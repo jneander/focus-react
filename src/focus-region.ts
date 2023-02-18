@@ -1,9 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import {useLayoutEffect} from 'react'
+import type {Focus, RegionOptions, RegionWrapper} from '@jneander/focus-dom'
+import {MutableRefObject, RefCallback, useLayoutEffect} from 'react'
+
+type FallbackRef = {fallbackOrder: number; ref: HTMLElement}
 
 export class FocusRegion {
-  constructor(focus, options) {
+  private _focus: Focus
+  private _focusRegion: RegionWrapper | null
+  private _options: RegionOptions
+  private _fallbackRefs: FallbackRef[]
+
+  constructor(focus: Focus, options?: RegionOptions) {
     this._focus = focus
     this._options = options
 
@@ -14,7 +20,7 @@ export class FocusRegion {
     this.fallbackRef = this.fallbackRef.bind(this)
   }
 
-  containerRef(ref) {
+  containerRef(ref: HTMLElement): void {
     if (this._focusRegion == null) {
       this._focusRegion = this._focus.addRegion(ref, this._options)
     }
@@ -25,11 +31,11 @@ export class FocusRegion {
     })
   }
 
-  fallbackRef(ref) {
+  fallbackRef(ref: HTMLElement): void {
     this.fallbackRefs(0)(ref)
   }
 
-  fallbackRefs(fallbackOrder) {
+  fallbackRefs(fallbackOrder: number): RefCallback<HTMLElement> {
     return ref => {
       this._fallbackRefs = this._fallbackRefs.filter(ref => ref.fallbackOrder !== fallbackOrder)
       this._fallbackRefs.push({fallbackOrder, ref})
@@ -39,7 +45,7 @@ export class FocusRegion {
     }
   }
 
-  useBorrowEffect(ref) {
+  useBorrowEffect(ref: MutableRefObject<HTMLElement>): void {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useLayoutEffect(() => {
       if (ref.current) {
@@ -54,21 +60,21 @@ export class FocusRegion {
     }, [ref.current])
   }
 
-  borrowFocus(ref) {
+  borrowFocus(ref: MutableRefObject<HTMLElement>): void {
     this._focusRegion.borrowFocus(ref.current)
   }
 
-  releaseFocus() {
+  releaseFocus(): void {
     this._focusRegion.releaseFocus()
   }
 
-  remove() {
+  remove(): void {
     if (this._focusRegion) {
       this._focusRegion.remove()
     }
   }
 
-  reconcile() {
+  reconcile(): void {
     if (this._focusRegion) {
       this._focusRegion.reconcile()
     }
