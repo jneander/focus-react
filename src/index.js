@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect, useLayoutEffect, useMemo, useState} from 'react'
 import {Focus} from '@jneander/focus-dom'
 
-import {FocusRegion} from './FocusRegion'
+import {FocusRegion} from './focus-region'
 
 const focusContext = createContext()
 const {Provider} = focusContext
