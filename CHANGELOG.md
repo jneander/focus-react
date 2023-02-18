@@ -7,6 +7,13 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.0](https://github.com/jneander/focus-react/compare/v2.0.0...v2.1.0) (2023-02-18)
+
+### Features
+
+- support react 18
+  ([b208f7d](https://github.com/jneander/focus-react/commit/b208f7da9f27147bbb5ef7231185d1166a612aae))
+
 ## [2.0.0](https://github.com/jneander/focus-react/compare/v1.0.2...v2.0.0) (2023-02-18)
 
 ### ⚠ BREAKING CHANGES
