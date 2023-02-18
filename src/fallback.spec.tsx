@@ -1,13 +1,13 @@
 import {ButtonDriver, createContainer} from '@jneander/spec-utils-dom'
-import {render} from '@jneander/spec-utils-react'
 import {combineRefs} from '@jneander/utils-react'
+import {render} from '@testing-library/react'
 import {ReactNode, RefCallback} from 'react'
 
-import {FocusProvider, useFocusRegion} from '.'
+import {FocusProvider, useFocusRegion} from './context'
 
 describe('Focus fallback', () => {
   let $container: HTMLElement
-  let component: Awaited<ReturnType<typeof render>>
+  let component: ReturnType<typeof render>
 
   beforeEach(() => {
     $container = createContainer()
@@ -19,14 +19,10 @@ describe('Focus fallback', () => {
     $container.remove()
   })
 
-  async function renderContent(content: ReactNode) {
+  function renderContent(content: ReactNode) {
     const element = <FocusProvider>{content}</FocusProvider>
 
-    component = await render(element, {$container})
-  }
-
-  async function waitForReconciliation() {
-    await new Promise(requestAnimationFrame)
+    component = render(element, {container: $container})
   }
 
   function get(buttonText: string) {
@@ -35,7 +31,7 @@ describe('Focus fallback', () => {
 
   context('within one level of regions', () => {
     context('when the default focus ref has been applied', () => {
-      it('moves focus to the default focus element', async () => {
+      it('moves focus to the default focus element', () => {
         function Region({showButton2}: {showButton2: boolean}) {
           const focusRegion = useFocusRegion()
 
@@ -47,18 +43,17 @@ describe('Focus fallback', () => {
           )
         }
 
-        await renderContent(<Region showButton2={true} />)
+        renderContent(<Region showButton2={true} />)
         get('Button 2').focus()
 
-        await renderContent(<Region showButton2={false} />)
-        await waitForReconciliation()
+        renderContent(<Region showButton2={false} />)
 
         expect(get('Button 1').focused).to.be.true
       })
     })
 
     context('when the default focus ref has not been applied', () => {
-      it('loses focus to the document body', async () => {
+      it('loses focus to the document body', () => {
         function Region({showButton2}: {showButton2: boolean}) {
           const focusRegion = useFocusRegion()
 
@@ -70,11 +65,10 @@ describe('Focus fallback', () => {
           )
         }
 
-        await renderContent(<Region showButton2={true} />)
+        renderContent(<Region showButton2={true} />)
         get('Button 2').focus()
 
-        await renderContent(<Region showButton2={false} />)
-        await waitForReconciliation()
+        renderContent(<Region showButton2={false} />)
 
         expect(document.activeElement === document.body).to.be.true
       })
@@ -102,7 +96,7 @@ describe('Focus fallback', () => {
     }
 
     context('when a focused element in the child region is removed', () => {
-      it('moves focus to the fallback focus element of the child region when assigned', async () => {
+      it('moves focus to the fallback focus element of the child region when assigned', () => {
         function ChildRegion({showButton2}: {showButton2: boolean}) {
           const focusRegion = useFocusRegion()
 
@@ -114,7 +108,7 @@ describe('Focus fallback', () => {
           )
         }
 
-        await renderContent(
+        renderContent(
           <RegionWithFallback name="Parent">
             <ChildRegion showButton2={true} />
           </RegionWithFallback>,
@@ -123,18 +117,17 @@ describe('Focus fallback', () => {
         const button2 = ButtonDriver.findWithText('Child Button 2', $container)
         button2.focus()
 
-        await renderContent(
+        renderContent(
           <RegionWithFallback name="Parent">
             <ChildRegion showButton2={false} />
           </RegionWithFallback>,
         )
-        await waitForReconciliation()
 
         const button1 = ButtonDriver.findWithText('Child Button 1', $container)
         expect(button1.focused).to.be.true
       })
 
-      it('uses the parent fallback when the child does not have one', async () => {
+      it('uses the parent fallback when the child does not have one', () => {
         function ParentRegion({children}: {children: ReactNode}) {
           const focusRegion = useFocusRegion()
 
@@ -158,7 +151,7 @@ describe('Focus fallback', () => {
           )
         }
 
-        await renderContent(
+        renderContent(
           <ParentRegion>
             <ChildRegion showButton2={true} />
           </ParentRegion>,
@@ -167,19 +160,18 @@ describe('Focus fallback', () => {
         const button2 = ButtonDriver.findWithText('Child Button 2', $container)
         button2.focus()
 
-        await renderContent(
+        renderContent(
           <ParentRegion>
             <ChildRegion showButton2={false} />
           </ParentRegion>,
         )
-        await waitForReconciliation()
 
         const button1 = ButtonDriver.findWithText('Parent Button 1', $container)
         expect(button1.focused).to.be.true
       })
 
       context('when the child region is the fallback of the parent region', () => {
-        it('moves focus to the fallback focus element of the child region when assigned', async () => {
+        it('moves focus to the fallback focus element of the child region when assigned', () => {
           function ChildRegion({parentRef}: {parentRef: RefCallback<HTMLElement>}) {
             const focusRegion = useFocusRegion()
             const containerRef = combineRefs(focusRegion.containerRef, parentRef)
@@ -205,19 +197,18 @@ describe('Focus fallback', () => {
             )
           }
 
-          await renderContent(<ParentRegion showButton2={true} />)
+          renderContent(<ParentRegion showButton2={true} />)
 
           const button2 = ButtonDriver.findWithText('Parent Button 2', $container)
           button2.focus()
 
-          await renderContent(<ParentRegion showButton2={false} />)
-          await waitForReconciliation()
+          renderContent(<ParentRegion showButton2={false} />)
 
           const button1 = ButtonDriver.findWithText('Child Button 1', $container)
           expect(button1.focused).to.be.true
         })
 
-        it('loses focus to the document body when the child has no fallback', async () => {
+        it('loses focus to the document body when the child has no fallback', () => {
           function ChildRegion({parentRef}: {parentRef: RefCallback<HTMLElement>}) {
             const focusRegion = useFocusRegion()
             const containerRef = combineRefs(focusRegion.containerRef, parentRef)
@@ -243,13 +234,12 @@ describe('Focus fallback', () => {
             )
           }
 
-          await renderContent(<ParentRegion showButton2={true} />)
+          renderContent(<ParentRegion showButton2={true} />)
 
           const button2 = ButtonDriver.findWithText('Parent Button 2', $container)
           button2.focus()
 
-          await renderContent(<ParentRegion showButton2={false} />)
-          await waitForReconciliation()
+          renderContent(<ParentRegion showButton2={false} />)
 
           expect(document.body === document.activeElement).to.be.true
         })
@@ -258,7 +248,7 @@ describe('Focus fallback', () => {
   })
 
   context('when using multiple fallbacks', () => {
-    it('moves focus to the lowest-order fallback', async () => {
+    it('moves focus to the lowest-order fallback', () => {
       function Region({showOther}: {showOther: boolean}) {
         const focusRegion = useFocusRegion()
 
@@ -271,16 +261,15 @@ describe('Focus fallback', () => {
         )
       }
 
-      await renderContent(<Region showOther={true} />)
+      renderContent(<Region showOther={true} />)
       get('Other').focus()
 
-      await renderContent(<Region showOther={false} />)
-      await waitForReconciliation()
+      renderContent(<Region showOther={false} />)
 
       expect(get('Fallback 1').focused).to.be.true
     })
 
-    it('uses the next-lowest fallback when the lowest has been removed', async () => {
+    it('uses the next-lowest fallback when the lowest has been removed', () => {
       function Region({showFallback1, showOther}: {showFallback1: boolean; showOther: boolean}) {
         const focusRegion = useFocusRegion()
 
@@ -293,16 +282,15 @@ describe('Focus fallback', () => {
         )
       }
 
-      await renderContent(<Region showFallback1={true} showOther={true} />)
+      renderContent(<Region showFallback1={true} showOther={true} />)
       get('Other').focus()
 
-      await renderContent(<Region showFallback1={false} showOther={false} />)
-      await waitForReconciliation()
+      renderContent(<Region showFallback1={false} showOther={false} />)
 
       expect(get('Fallback 2').focused).to.be.true
     })
 
-    it('loses focus to the document body when all fallback elements have been removed', async () => {
+    it('loses focus to the document body when all fallback elements have been removed', () => {
       function Region({showButtons}: {showButtons: boolean}) {
         const focusRegion = useFocusRegion()
 
@@ -315,11 +303,10 @@ describe('Focus fallback', () => {
         )
       }
 
-      await renderContent(<Region showButtons={true} />)
+      renderContent(<Region showButtons={true} />)
       get('Other').focus()
 
-      await renderContent(<Region showButtons={false} />)
-      await waitForReconciliation()
+      renderContent(<Region showButtons={false} />)
 
       expect(document.activeElement === document.body).to.be.true
     })

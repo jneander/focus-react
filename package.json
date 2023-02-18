@@ -56,7 +56,6 @@
     "@jneander/prettier-config": "^1.0.0",
     "@jneander/semantic-release-config": "^1.0.1",
     "@jneander/spec-utils-dom": "^2.0.0",
-    "@jneander/spec-utils-react": "^2.0.0",
     "@jneander/utils-react": "^2.1.0",
     "@testing-library/react": "^12.0.0",
     "@types/chai": "^4.3.4",
