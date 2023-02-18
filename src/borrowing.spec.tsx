@@ -1,13 +1,13 @@
 import {ReactNode, useLayoutEffect, useRef} from 'react'
 import {createPortal} from 'react-dom'
 import {createContainer, ButtonDriver} from '@jneander/spec-utils-dom'
-import {render} from '@jneander/spec-utils-react'
+import {render} from '@testing-library/react'
 
-import {FocusProvider, useFocusRegion} from '.'
+import {FocusProvider, useFocusRegion} from './context'
 
 describe('Borrowing focus', () => {
   let $container: HTMLElement
-  let component: Awaited<ReturnType<typeof render>>
+  let component: ReturnType<typeof render>
 
   beforeEach(() => {
     $container = createContainer()
@@ -19,10 +19,10 @@ describe('Borrowing focus', () => {
     $container.remove()
   })
 
-  async function renderContent(content: ReactNode) {
+  function renderContent(content: ReactNode) {
     const element = <FocusProvider>{content}</FocusProvider>
 
-    component = await render(element, {$container})
+    component = render(element, {container: $container})
   }
 
   function get(buttonText: string) {
@@ -69,63 +69,63 @@ describe('Borrowing focus', () => {
       )
     }
 
-    it('moves focus to the borrowing element', async () => {
-      await renderContent(<SpecComponent showBorrower={false} />)
+    it('moves focus to the borrowing element', () => {
+      renderContent(<SpecComponent showBorrower={false} />)
       get('Parent Button 2').focus()
 
-      await renderContent(<SpecComponent showBorrower={true} />)
+      renderContent(<SpecComponent showBorrower={true} />)
 
       expect(get('Borrower Button 1').focused).to.be.true
     })
 
-    it('releases focus to the previously-active element in the parent', async () => {
-      await renderContent(<SpecComponent showBorrower={false} />)
+    it('releases focus to the previously-active element in the parent', () => {
+      renderContent(<SpecComponent showBorrower={false} />)
       get('Parent Button 2').focus()
-      await renderContent(<SpecComponent showBorrower={true} />)
+      renderContent(<SpecComponent showBorrower={true} />)
 
-      await renderContent(<SpecComponent showBorrower={false} />)
+      renderContent(<SpecComponent showBorrower={false} />)
 
       expect(get('Parent Button 2').focused).to.be.true
     })
 
-    it('is not affected by changes to focus while in the borrower region', async () => {
-      await renderContent(<SpecComponent showBorrower={false} />)
+    it('is not affected by changes to focus while in the borrower region', () => {
+      renderContent(<SpecComponent showBorrower={false} />)
       get('Parent Button 2').focus()
-      await renderContent(<SpecComponent showBorrower={true} />)
+      renderContent(<SpecComponent showBorrower={true} />)
       get('Borrower Button 2').focus()
 
-      await renderContent(<SpecComponent showBorrower={false} />)
+      renderContent(<SpecComponent showBorrower={false} />)
 
       expect(get('Parent Button 2').focused).to.be.true
     })
 
     context('when the previously-focused element has been removed', () => {
-      it('falls back to the parent focus fallback when assigned', async () => {
-        await renderContent(
+      it('falls back to the parent focus fallback when assigned', () => {
+        renderContent(
           <SpecComponent showBorrower={false} showParentButton2={true} useParentFallback={true} />,
         )
         get('Parent Button 2').focus()
-        await renderContent(
+        renderContent(
           <SpecComponent showBorrower={true} showParentButton2={true} useParentFallback={true} />,
         )
 
-        await renderContent(
+        renderContent(
           <SpecComponent showBorrower={false} showParentButton2={false} useParentFallback={true} />,
         )
 
         expect(get('Parent Button 1').focused).to.be.true
       })
 
-      it('loses focus to the document body when no parent focus fallback was assigned', async () => {
-        await renderContent(
+      it('loses focus to the document body when no parent focus fallback was assigned', () => {
+        renderContent(
           <SpecComponent showBorrower={false} showParentButton2={true} useParentFallback={false} />,
         )
         get('Parent Button 2').focus()
-        await renderContent(
+        renderContent(
           <SpecComponent showBorrower={true} showParentButton2={true} useParentFallback={false} />,
         )
 
-        await renderContent(
+        renderContent(
           <SpecComponent
             showBorrower={false}
             showParentButton2={false}
@@ -192,35 +192,35 @@ describe('Borrowing focus', () => {
       )
     }
 
-    it('moves focus to the borrowing element', async () => {
-      await renderContent(<SpecComponent showBorrower={false} />)
+    it('moves focus to the borrowing element', () => {
+      renderContent(<SpecComponent showBorrower={false} />)
       get('Parent Button 2').focus()
 
-      await renderContent(<SpecComponent showBorrower={true} />)
+      renderContent(<SpecComponent showBorrower={true} />)
 
       expect(get('Borrower Button 1').focused).to.be.true
     })
 
-    it('releases focus to the previously-active element in the parent', async () => {
-      await renderContent(<SpecComponent showBorrower={false} />)
+    it('releases focus to the previously-active element in the parent', () => {
+      renderContent(<SpecComponent showBorrower={false} />)
       get('Parent Button 2').focus()
-      await renderContent(<SpecComponent showBorrower={true} />)
+      renderContent(<SpecComponent showBorrower={true} />)
 
-      await renderContent(<SpecComponent showBorrower={false} />)
+      renderContent(<SpecComponent showBorrower={false} />)
 
       expect(get('Parent Button 2').focused).to.be.true
     })
 
-    it('is not affected by changes to focus while in the borrower region', async () => {
-      await renderContent(<SpecComponent showBorrower={false} />)
+    it('is not affected by changes to focus while in the borrower region', () => {
+      renderContent(<SpecComponent showBorrower={false} />)
       get('Parent Button 2').focus()
-      await renderContent(<SpecComponent showBorrower={true} />)
+      renderContent(<SpecComponent showBorrower={true} />)
       // Force React to unset and reset the ref.
-      await renderContent(<SpecComponent showBorrower={true} />)
+      renderContent(<SpecComponent showBorrower={true} />)
 
       get('Borrower Button 2').focus()
 
-      await renderContent(<SpecComponent showBorrower={false} />)
+      renderContent(<SpecComponent showBorrower={false} />)
 
       expect(get('Parent Button 2').focused).to.be.true
     })
