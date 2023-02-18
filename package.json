@@ -57,7 +57,7 @@
     "@jneander/semantic-release-config": "^1.0.1",
     "@jneander/spec-utils-dom": "^2.0.0",
     "@jneander/utils-react": "^2.1.0",
-    "@testing-library/react": "^12.0.0",
+    "@testing-library/react": "^14.0.0",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
     "@types/sinon": "^10.0.0",
@@ -87,9 +87,9 @@
     "mocha": "^10.0.0",
     "prettier": "^2.8.4",
     "process": "^0.11.10",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0",
-    "react-test-renderer": "^17.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-test-renderer": "^18.0.0",
     "rimraf": "^4.0.0",
     "sinon": "^15.0.0",
     "typescript": "^4.9.5",
@@ -98,8 +98,8 @@
   },
   "peerDependencies": {
     "@jneander/focus-dom": ">= 1.0.0",
-    "react": "^16.8.0 || ^17.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "commitlint": {
     "extends": "@jneander/commitlint-config"
