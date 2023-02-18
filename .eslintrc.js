@@ -11,7 +11,6 @@ module.exports = {
     'prettier',
     'plugin:eslint-comments/recommended',
     'plugin:promise/recommended',
-    'prettier/react',
     'plugin:react/recommended',
   ],
 
