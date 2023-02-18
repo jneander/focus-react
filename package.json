@@ -17,6 +17,7 @@
     "lint:prettier": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "prebuild": "npm run clean",
+    "prepublishOnly": "npm run build",
     "test": "./scripts/test.js",
     "test:head": "npm run test -- --no-headless",
     "test:head:watch": "npm run test -- --no-headless --watch",
@@ -49,6 +50,7 @@
     "@jneander/dev-utils-node": "^2.0.0",
     "@jneander/focus-dom": "^2.0.0",
     "@jneander/prettier-config": "^1.0.0",
+    "@jneander/semantic-release-config": "^1.0.1",
     "@jneander/spec-utils-dom": "^2.0.0",
     "@jneander/spec-utils-react": "^2.0.0",
     "@jneander/utils-react": "^2.1.0",
@@ -95,5 +97,10 @@
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
-  "prettier": "@jneander/prettier-config"
+  "prettier": "@jneander/prettier-config",
+  "release": {
+    "extends": [
+      "@jneander/semantic-release-config"
+    ]
+  }
 }
