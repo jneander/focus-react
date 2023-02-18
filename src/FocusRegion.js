@@ -1,6 +1,6 @@
 import {useLayoutEffect} from 'react'
 
-export default class FocusRegion {
+export class FocusRegion {
   constructor(focus, options) {
     this._focus = focus
     this._options = options
