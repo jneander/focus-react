@@ -1,22 +1,28 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import {createContext, useContext, useEffect, useLayoutEffect, useMemo, useState} from 'react'
-import {Focus} from '@jneander/focus-dom'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react'
+import {Focus, RegionOptions} from '@jneander/focus-dom'
 
 import {FocusRegion} from './focus-region'
 
-const focusContext = createContext()
+const focusContext = createContext<Focus>(null)
 const {Provider} = focusContext
 
-export function FocusProvider({children}) {
+export function FocusProvider({children}: {children: ReactNode}) {
   const [focus] = useState(() => new Focus())
 
   return <Provider value={focus}>{children}</Provider>
 }
 
-export function useFocusRegion(options) {
+export function useFocusRegion(options?: RegionOptions) {
   const focus = useContext(focusContext)
-  /* eslint-disable react-hooks/exhaustive-deps */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const focusRegion = useMemo(() => new FocusRegion(focus, options), [])
 
   /*
@@ -26,8 +32,7 @@ export function useFocusRegion(options) {
     return () => {
       focusRegion.remove()
     }
-  }, [])
-  /* eslint-enable react-hooks/exhaustive-deps */
+  }, [focusRegion])
 
   /*
    * Use effect after complete render so that all refs have propagated.

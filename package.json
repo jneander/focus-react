@@ -20,6 +20,8 @@
     "test": "./scripts/test.js",
     "test:head": "npm run test -- --no-headless",
     "test:head:watch": "npm run test -- --no-headless --watch",
+    "test:types": "tsc --noEmit",
+    "test:types:watch": "tsc --noEmit --watch",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
